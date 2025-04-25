@@ -1,0 +1,30 @@
+[
+    {
+      "id": 1,
+      "name": "Modern Sofa",
+      "category": "Furniture",
+      "description": "A comfortable modern sofa to enhance your living room.",
+      "price": 599.99,
+      "image": "path_to_sofa_image.jpg",
+      "type": "furniture"
+    },
+    {
+      "id": 2,
+      "name": "Classic Table Lamp",
+      "category": "Lighting",
+      "description": "A sleek and stylish table lamp for a cozy atmosphere.",
+      "price": 89.99,
+      "image": "path_to_lamp_image.jpg",
+      "type": "lighting"
+    },
+    {
+      "id": 3,
+      "name": "Abstract AI Art",
+      "category": "Wall Art",
+      "description": "AI-generated abstract art to add a futuristic touch to your room.",
+      "price": 150.00,
+      "image": "path_to_ai_art_image.jpg",
+      "type": "wall_art"
+    }
+  ]
+  
