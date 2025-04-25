@@ -1,12 +1,26 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import "../App.css";
 
 const Navbar = () => {
   return (
-    <nav>
-      <Link to="/">Home</Link> | 
-      <Link to="/products">Products</Link> | 
-      <Link to="/cart">Cart</Link>
-    </nav>
+    <header>
+      <div className="container">
+        <nav>
+          <div className="nav-logo">DecoraAI</div>
+          <ul className="nav-links">
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/products">Products</Link>
+            </li>
+            <li>
+              <Link to="/cart">Cart</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
   );
 };
 
