@@ -45,18 +45,6 @@ const Home = () => {
     try {
       setLoading(true);
       const formData = new FormData();
-      // Get CSRF token from cookies
-      const csrfToken = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('csrftoken='))
-        ?.split('=')[1];
-
-      if (!csrfToken) {
-        throw new Error('CSRF token not found');
-      }
-
-      // Add CSRF token and file to FormData
-      formData.append('csrfmiddlewaretoken', csrfToken);
       formData.append('original_image', imageFile);
       
       // Log FormData contents for debugging
