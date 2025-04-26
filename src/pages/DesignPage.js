@@ -8,8 +8,8 @@ const DesignPage = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [mockupData, setMockupData] = useState(null);
-  const { image: roomImage } = location.state || {};
+  const [mockups, setMockups] = useState([]);
+  const [product, setProduct] = useState(null);
 
   useEffect(() => {
     const generateMockup = async () => {
@@ -25,7 +25,10 @@ const DesignPage = () => {
           };
           
           const data = await apiRequest(`/room-images/${roomImageId}/generate_mockup/`, 'POST', payload);
-          setMockupData(data[0]); // Get the first mockup from the response
+          setMockups(data); // Save all mockups
+          if (data.length > 0) {
+            setProduct(data[0].product); // Get product info from first mockup
+          }
           setError(null);
         }
       } catch (err) {
@@ -47,63 +50,47 @@ const DesignPage = () => {
     return <div className="container">Error: {error}</div>;
   }
 
-  if (!roomImage || !mockupData) {
-    return <div className="container">No product or room image selected</div>;
+  if (!mockups.length || !product) {
+    return <div className="container">No mockups generated</div>;
   }
 
   return (
     <div className="container">
-      <h1 className="mt-3 mb-3">Your Design</h1>
-      <div className="grid">
-        <div className="card">
-          <h2 className="card-title">Original Room</h2>
-          <img
-            src={roomImage}
-            alt="Your room"
-            style={{
-              width: "100%",
-              height: "auto",
-              borderRadius: "var(--radius-md)",
-            }}
-          />
-        </div>
-        <div className="card">
-          <h2 className="card-title">Generated Design</h2>
-          <img
-            src={`${BASE_URL}${mockupData.mockup_image}`}
-            alt="Generated design"
-            style={{
-              width: "100%",
-              height: "auto",
-              borderRadius: "var(--radius-md)",
-            }}
-          />
-        </div>
-        <div className="card">
-          <h2 className="card-title">Selected Product</h2>
-          <img
-            src={`${BASE_URL}${mockupData.product.product_image}`}
-            alt={mockupData.product.name}
-            style={{
-              width: "100%",
-              height: "auto",
-              borderRadius: "var(--radius-md)",
-            }}
-          />
-          <h3 className="mt-2">{mockupData.product.name}</h3>
-          <p className="card-body">{mockupData.product.description}</p>
-          <p
-            style={{
-              fontSize: "2rem",
-              fontWeight: "600",
-              color: "var(--text-dark)",
-            }}
-          >
-            ${mockupData.product.price}
+      <h1 className="mt-3 mb-3">Your Design Options</h1>
+      
+      {/* Product Information */}
+      <div className="card mb-4">
+        <div className="card-body">
+          <h2 className="card-title">{product.name}</h2>
+          <p className="card-body">{product.description}</p>
+          <p style={{
+            fontSize: "2rem",
+            fontWeight: "600",
+            color: "var(--text-dark)",
+          }}>
+            ${product.price}
           </p>
-          <p className="card-body">Category: {mockupData.product.category}</p>
-          <p className="card-body">Stock: {mockupData.product.stock}</p>
+          <p className="card-body">Category: {product.category}</p>
+          <p className="card-body">Stock: {product.stock}</p>
         </div>
+      </div>
+
+      {/* Mockup Images Grid */}
+      <div className="grid">
+        {mockups.map((mockup, index) => (
+          <div key={index} className="card">
+            <h3 className="card-title">Option {index + 1}</h3>
+            <img
+              src={`${BASE_URL}${mockup.mockup_image}`}
+              alt={`Generated design ${index + 1}`}
+              style={{
+                width: "100%",
+                height: "auto",
+                borderRadius: "var(--radius-md)",
+              }}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );

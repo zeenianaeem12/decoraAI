@@ -1,6 +1,6 @@
 // api.js
 
-export const BASE_URL = 'https://empty-symbols-learn.loca.lt'; // <-- Change this to your base API URL
+export const BASE_URL = 'https://whole-kings-doubt.loca.lt'; // <-- Change this to your base API URL
 
 async function apiRequest(endpoint, method = 'GET', data = null) {
     const url = `${BASE_URL}/api${endpoint}`;
