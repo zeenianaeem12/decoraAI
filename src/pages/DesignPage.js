@@ -57,6 +57,23 @@ const DesignPage = () => {
   return (
     <div className="container">
       <h1 className="mt-3 mb-3">Your Design Options</h1>
+      {/* Mockup Images Grid */}
+      <div className="grid">
+        {mockups.map((mockup, index) => (
+          <div key={index} className="card">
+            <h3 className="card-title">Option {index + 1}</h3>
+            <img
+              src={`${BASE_URL}${mockup.mockup_image}`}
+              alt={`Generated design ${index + 1}`}
+              style={{
+                width: "100%",
+                height: "auto",
+                borderRadius: "var(--radius-md)",
+              }}
+            />
+          </div>
+        ))}
+      </div>
       
       {/* Product Information */}
       <div className="card mb-4">
@@ -75,23 +92,7 @@ const DesignPage = () => {
         </div>
       </div>
 
-      {/* Mockup Images Grid */}
-      <div className="grid">
-        {mockups.map((mockup, index) => (
-          <div key={index} className="card">
-            <h3 className="card-title">Option {index + 1}</h3>
-            <img
-              src={`${BASE_URL}${mockup.mockup_image}`}
-              alt={`Generated design ${index + 1}`}
-              style={{
-                width: "100%",
-                height: "auto",
-                borderRadius: "var(--radius-md)",
-              }}
-            />
-          </div>
-        ))}
-      </div>
+      
     </div>
   );
 };
