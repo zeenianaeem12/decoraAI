@@ -1,15 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import productsData from "../data/Products.json";
 import "../App.css";
 
 const Home = () => {
-  const [prompt, setPrompt] = useState("");
   const [image, setImage] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    navigate("/display", { state: { image } });
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file));
+      setShowModal(true);
+    }
+  };
+
+  const handleProductSelect = (product) => {
+    navigate(`/design/${product.id}`, { state: { image, product } });
   };
 
   return (
@@ -43,42 +51,56 @@ const Home = () => {
 
         <div className="card mt-2 slide-in-bottom">
           <h2 className="card-title">Visualize Your Space</h2>
-          <form onSubmit={handleSubmit} className="mt-1">
-            <div className="form-group">
-              <label htmlFor="prompt">
-                Enter a description of your dream space:
-              </label>
-              <input
-                id="prompt"
-                type="text"
-                placeholder="E.g., A modern living room with blue accents"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                className="mb-1"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="image-upload">
-                Upload a photo of your current space:
-              </label>
-              <input
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                onChange={(e) =>
-                  setImage(URL.createObjectURL(e.target.files[0]))
-                }
-                className="mb-1"
-              />
-            </div>
-
-            <button className="btn" type="submit">
-              Visualize Now
-            </button>
-          </form>
+          <div className="form-group">
+            <label htmlFor="image-upload">
+              Upload a photo of your current space:
+            </label>
+            <input
+              id="image-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="mb-1"
+            />
+          </div>
         </div>
       </section>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Select a Product</h2>
+            <div className="grid">
+              {productsData.map((product) => (
+                <div
+                  key={product.id}
+                  className="card hover-lift"
+                  onClick={() => handleProductSelect(product)}
+                >
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="mb-2"
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      borderRadius: "var(--radius-md)",
+                    }}
+                  />
+                  <h3 className="card-title">{product.name}</h3>
+                  <p className="card-body">${product.price}</p>
+                </div>
+              ))}
+            </div>
+            <button
+              className="btn mt-2"
+              onClick={() => setShowModal(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

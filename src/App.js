@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
 import DisplayImage from './pages/DisplayImage';
+import DesignPage from './pages/DesignPage';
 import Navbar from './components/Navbar';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="/products" element={<ProductPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/display" element={<DisplayImage />} />
+        <Route path="/design/:id" element={<DesignPage />} />
       </Routes>
     </Router>
   );
