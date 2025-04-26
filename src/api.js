@@ -1,6 +1,6 @@
 // api.js
 
-const BASE_URL = 'http://127.0.0.1:8000/api'; // <-- Change this to your base API URL
+const BASE_URL = 'https://fruity-baboons-fry.loca.lt/api'; // <-- Change this to your base API URL
 
 async function apiRequest(endpoint, method = 'GET', data = null) {
     const url = `${BASE_URL}${endpoint}`;

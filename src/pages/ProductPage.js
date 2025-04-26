@@ -11,7 +11,8 @@ const ProductPage = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const data = await apiRequest('/products');
+        const data = await apiRequest('/products/');
+        console.log('Fetched products:', data);
         setProducts(data);
         setError(null);
       } catch (err) {
