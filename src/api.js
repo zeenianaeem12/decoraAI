@@ -2,6 +2,22 @@
 
 export const BASE_URL = 'https://empty-symbols-learn.loca.lt'; // <-- Change this to your base API URL
 
+// Function to get CSRF token from cookies
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 async function apiRequest(endpoint, method = 'GET', data = null) {
     const url = `${BASE_URL}/api${endpoint}`;
 
@@ -9,6 +25,15 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
         method,
         headers: {},
     };
+
+    // Add CSRF token for POST, PUT, PATCH, DELETE requests
+    if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+        const csrfToken = getCookie('csrftoken');
+        if (!csrfToken) {
+            throw new Error('CSRF token not found');
+        }
+        options.headers['X-CSRFToken'] = csrfToken;
+    }
 
     // Only set Content-Type for JSON data
     if (data instanceof FormData) {
