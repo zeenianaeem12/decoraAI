@@ -1,19 +1,41 @@
 import React, { useEffect, useState } from "react";
-import productsData from "../data/Products.json";
+import apiRequest from "../api";
 import "../App.css";
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Set products to the data from products.json
-    setProducts(productsData);
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await apiRequest('/products');
+        setProducts(data);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   const handleAddToCart = (product) => {
     // You would typically implement actual cart functionality here
     console.log(`Added ${product.name} to cart`);
   };
+
+  if (loading) {
+    return <div className="container">Loading products...</div>;
+  }
+
+  if (error) {
+    return <div className="container">Error: {error}</div>;
+  }
 
   return (
     <div className="container">
@@ -22,7 +44,7 @@ const ProductPage = () => {
         {products.map((product) => (
           <div key={product.id} className="card hover-lift">
             <img
-              src={product.image}
+              src={product.product_image}
               alt={product.name}
               className="mb-2"
               style={{
